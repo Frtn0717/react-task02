@@ -11,11 +11,16 @@ class Content extends React.Component {
   componentDidMount() {
     const urlAlbums = 'https://jsonplaceholder.typicode.com/albums';
     
-    fetch(urlAlbums)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => this.setState({ albums: data }));     
+    try {
+      const response = fetch(urlAlbums);
+
+      response.then((res) => { return res.json() })
+        .then((data) => this.setState({ albums: data }));   
+    } catch (error) {
+      throw new Error('Something went wrong...')
+    }
+
+  
   }
 
   render() {
@@ -25,7 +30,9 @@ class Content extends React.Component {
 
         {this.state.albums.map(album => {
          return <li key={ album.id }>
+
          { album.title }
+         
          </li>
         })}
 
